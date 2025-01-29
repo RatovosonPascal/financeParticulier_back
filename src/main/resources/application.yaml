@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/financedb?useSSL=false&serverTimezone=UTC
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10 # Taille maximale du pool de connexions (ajustez selon vos besoins)
+  jpa:
+    hibernate:
+      ddl-auto: update # Options possibles : none, update, create, create-drop
+    show-sql: true # Affiche les requêtes SQL dans la console pour le débogage
+    database-platform: org.hibernate.dialect.MySQLDialect

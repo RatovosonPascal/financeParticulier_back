@@ -1,19 +1,23 @@
 package com.example.demo.entities;
 
+import com.example.demo.Utils.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class UserClient {
+public class UserClient implements UserDetails {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private int userId;
@@ -74,13 +78,44 @@ public class UserClient {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return null;
     }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+    public void setPassword(String password) {
+        this.password = PasswordUtil.encodePassword(password);
+    }
+
 
     public Double getIncome() {
         return income;

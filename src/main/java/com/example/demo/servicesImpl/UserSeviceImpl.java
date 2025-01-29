@@ -7,6 +7,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class UserSeviceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private CostRepository costRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public UserClient saveUserClient(UserClient user) {
         return userRepository.save(user);
@@ -49,6 +52,13 @@ public class UserSeviceImpl implements UserService {
     @Override
     public List<UserClient> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void registerUser(UserClient user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+
     }
 
 
